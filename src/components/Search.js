@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { debounce } from "lodash";
 
 import { Input  } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -9,6 +10,10 @@ import Blurb from './Blurb';
 
 const Container = styled.div`
 `;
+const Error = styled.div`
+    color: #ef5353;
+    font-weight: 600;
+`
 
 class Search extends Component {
 
@@ -34,25 +39,22 @@ class Search extends Component {
         this.isOnCorrectNetwork()
         if(window.location.hash.substr(1).length > 0) {
             document.getElementById("SearchInput").value = window.location.hash.substr(1);
-            this.handleSearch(null, window.location.hash.substr(1));
+            this.handleSearch(window.location.hash.substr(1));
         }
     }
-
-    async handleSearch(objEvent, strValue = "")
+ 
+    handleSearch = debounce((strInput) =>
     {
-        let strInput = "";
-        if(objEvent) {
-          strInput = objEvent.target.value;
+        this.setState({search: {subdomain: null}, "error": null})
+
+        if(strInput.match(/^[A-z0-9]+$/)) {
+            let strNormalised = namehash.normalize(strInput);
+            this.setState({search: {subdomain: strNormalised}});
+            window.location.hash = strNormalised;
         } else {
-            strInput = strValue;
+            this.setState({search: {subdomain: null}, "error": "Please use only alphanumeric characters!"})
         }
-  
-      this.setState({search: {subdomain: null}, "error": null})
-      let strNormalised = namehash.normalize(strInput);
-      this.setState({search: {subdomain: strNormalised}});
-  
-      window.location.hash = strNormalised;
-    }
+    }, 500);
 
     clearInput(objEvent)
     {
@@ -67,7 +69,10 @@ class Search extends Component {
     renderView()
     {
         return(
-            <Input id="SearchInput" onPaste={this.handleSearch} onKeyUp={this.handleSearch} type="search" placeholder="myname"></Input> 
+            <div>
+                <Input id="SearchInput" onPaste={e => this.handleSearch(e.target.value)} onKeyUp={e => this.handleSearch(e.target.value)} type="search" placeholder="myname"></Input> 
+                <Error>{this.state.error !== null ? this.state.error : ``}</Error>
+            </div>
         )
     }
 
