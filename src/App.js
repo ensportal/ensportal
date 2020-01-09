@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import styled, { ThemeProvider } from 'styled-components';
-import { light, dark } from '@mycrypto/ui';
-import Header from './components/Header';
-import Search from './components/Search';
-import Footer from './components/Footer';
-import ThemeSwitch from './components/ThemeSwitch';
+import styled, { ThemeProvider } from 'styled-components'
+import { light, dark } from '@mycrypto/ui'
+import Header from './components/Header'
+import Search from './components/Search'
+import Footer from './components/Footer'
+import ThemeSwitch from './components/ThemeSwitch'
+import UsersEthereumAddress from './components/UsersEthereumAddress'
 
 const AppContainer = styled.div`
   padding: 1em;
@@ -48,6 +49,7 @@ class App extends Component {
         <AppContainer>
             <TopRight>
               <ThemeSwitch changeTheme={this.changeTheme} theme_light={this.state.theme_light ? true : false}/>
+              <UsersEthereumAddress />
             </TopRight>
             <Header />
             <Search />

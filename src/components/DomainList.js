@@ -93,7 +93,7 @@ class DomainList extends Component {
           domainnames[i].id = utils.bigNumberify(utils.keccak256(utils.toUtf8Bytes(domain.name))).toString(); //erc721 nft token id
           domainnames[i].label = utils.keccak256(utils.toUtf8Bytes(domain.name));
 
-          let name = [this.props.subdomain, domain.name, Config.settings.tld].join(".");
+          let name = [this.props.subdomain, domain.name, Config.ens.tld].join(".");
 
             console.log(`Searching for name: ${name}. Registrar Version: ${domain.version}`);
             

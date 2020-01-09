@@ -10,7 +10,7 @@ const Container = styled.div`
     border-top: 1px solid ${props => props.theme.controlBorder};
 
     > a {
-        color: ${props => props.theme.text};
+        color: ${props => props.theme.link};
         text-decoration: underline;
         text-decoration-style: dotted;
     }

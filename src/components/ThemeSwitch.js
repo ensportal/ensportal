@@ -6,7 +6,8 @@ import { ReactComponent as MoonSvg } from '../images/moon.svg'
 
 const Container = styled.div`
     padding: 1em;
-    display: inline-block;
+    display: block;
+    float: right;
 
     -webkit-user-select: none; /* Chrome/Safari */        
     -moz-user-select: none; /* Firefox */
@@ -30,8 +31,8 @@ class ThemeSwitch extends Component
             <Container onClick={this.props.changeTheme}>
                 {
                     this.props.theme_light
-                    ? <SunSvg />
-                    : <MoonSvg />    
+                    ? <MoonSvg />
+                    : <SunSvg />   
                 }
             </Container>
         );

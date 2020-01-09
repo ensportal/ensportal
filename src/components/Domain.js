@@ -182,7 +182,7 @@ class Domain extends Component {
             <DomainView>
                 <h3>
                 <Availability available={this.props.available}>{this.props.available ? "AVAILABLE" : "UNAVAILABLE"}</Availability>
-                    <RootDomain>{[this.props.subdomain,this.props.name,Config.settings.tld].join(".")}</RootDomain>
+                    <RootDomain>{[this.props.subdomain,this.props.name,Config.ens.tld].join(".")}</RootDomain>
                 </h3>
                 {
                 this.props.available
@@ -194,7 +194,7 @@ class Domain extends Component {
                 <AdditionalInfo>
                     {/* <label>Number of Subdomains:</label> {this.props.subdomainCount} <br /> */}
                      
-                    <Tooltip tooltip={`This is when the name ${[this.props.name,Config.settings.tld].join(".")} expires. Anyone can extend the life of it.`}>
+                    <Tooltip tooltip={`This is when the name ${[this.props.name,Config.ens.tld].join(".")} expires. Anyone can extend the life of it.`}>
                         <AddInfoIcon icon="shape" />
                         <AddInfoLabel>Renew in:</AddInfoLabel>
                         <AddInfoValue>
@@ -204,8 +204,8 @@ class Domain extends Component {
 
                     <br />
 
-                    <SmallText>erc721 id: {this.props.nftid}</SmallText> <br />
-                    <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText> <br />
+                    <SmallText>erc721 id: {this.props.nftid}</SmallText>
+                    <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
                 </AdditionalInfo>
             </DomainView>
         )

@@ -1,9 +1,9 @@
 {
     "settings": {
-        "tld": "eth",
-        "referrerAddress": "0x4C9D4a1310639DA40bd47B68553eD6Eb366db22C"
+        "referrerAddress": "0xA768970fB6A49Ffaf4B83C26Ece0C8544C7b79a0"
     },
     "ens": {
+        "tld": "eth",
         "baseRegistrarImplementationAddress": "0xfac7bea255a6990f749363002136af6556b31e04",
         "publicResolverName": "resolver.eth"
     },
