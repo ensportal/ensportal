@@ -64,14 +64,12 @@ class DomainList extends Component {
     
         try {
           self.ens = await ENS.deployed();
-            console.log(`ENS`);
-            console.log(self.ens);
+
           // Construct instances of the registrars we know about
           await this.buildInstances();
     
           // Get the address of the current public resolver
           self.resolverAddress = await self.ens.resolver(namehash.hash(Config.ens.publicResolverName));
-          console.log(`Resolver Address: ${self.resolverAddress}`);
         } catch(e) {
           console.log(e);
           //   $("#wrongnetworkmodal").modal('show');

@@ -15,11 +15,12 @@ class UsersEthereumAddress extends Component
     constructor()
     {
         super()
-        this.getEnsName()
-
         this.state = {
-            ensName: null
+            ensName: "No Web3 Address Detected!",
+            address: "0x0000000000000000000000000000000000000000"
         }
+
+        this.getEnsName()
     }
 
     truncate(addr)
@@ -29,24 +30,33 @@ class UsersEthereumAddress extends Component
 
     async getEnsName()
     {
-        const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-        const ensName = await provider.lookupAddress(provider._web3Provider.selectedAddress).then(function(address) {
-            return address;
-        })
-        
-        this.setState({
-            ensName: ensName
-        })
+        if(window.web3.currentProvider) {
+            const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+            if(provider._web3Provider.selectedAddress !== undefined) {
+                const ensName = await provider.lookupAddress(provider._web3Provider.selectedAddress).then(function(address) {
+                    return address;
+                })
+                
+                this.setState({
+                    ensName: ensName,
+                    address: provider._web3Provider.selectedAddress
+                })
+            }
+        } 
+
+        // if(this.state.address === null) {
+        // an infinite loop on metamask address change and single page refresh
+        //     console.log("RErunning");
+        //     await this.getEnsName();
+        // }
     }
 
     render()
     {
-        const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-
         return(
             <Container>
                 <Address
-                    address={provider._web3Provider.selectedAddress}
+                    address={this.state.address}
                     title={this.state.ensName == null ? "Your Address" : this.state.ensName}
                     truncate={this.truncate}
                     isCopyable={false}
