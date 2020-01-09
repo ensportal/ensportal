@@ -8,6 +8,12 @@ const Container = styled.div`
     color: ${props => props.theme.text};
     background: ${props => props.theme.controlBackground}
     border-top: 1px solid ${props => props.theme.controlBorder};
+
+    > a {
+        color: ${props => props.theme.text};
+        text-decoration: underline;
+        text-decoration-style: dotted;
+    }
 `;
 
 class Footer extends Component 

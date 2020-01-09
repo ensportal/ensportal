@@ -9,7 +9,7 @@ import ThemeSwitch from './components/ThemeSwitch';
 
 const AppContainer = styled.div`
   padding: 1em;
-  background: ${props => props.theme.background};
+  background: ${props => props.theme.panelBackground};
   color: ${props => props.theme.text};
   min-height: 90vh;
 `
