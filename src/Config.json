@@ -1,0 +1,16 @@
+{
+    "settings": {
+        "tld": "eth",
+        "referrerAddress": "0x4C9D4a1310639DA40bd47B68553eD6Eb366db22C"
+    },
+    "ens": {
+        "baseRegistrarImplementationAddress": "0xfac7bea255a6990f749363002136af6556b31e04",
+        "publicResolverName": "resolver.eth"
+    },
+    "domains": [
+        {"name": "myavatar", "version": "1.0", "featured": true},
+        {"name": "gimmethe", "version": "1.0", "featured": false},
+        {"name": "awake", "version": "1.0", "featured": false},
+        {"name": "hack", "version": "1.0", "featured": false}
+    ]
+}
