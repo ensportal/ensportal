@@ -12,10 +12,11 @@ import { ethers } from 'ethers';
 const Container = styled.div`
     width: 400px;
     display: inline-block;
-    border: 2px solid ${props => props.available ? "#000" : "#ef5353"};
+    border: 2px solid ${props => props.available ? props => props.theme.actionPanelBorder : "#ef5353"};
     border-radius: 5px;
     padding: 0.5em;
     margin: 1em;
+    background: ${props => props.theme.actionPanelBackground};
 
     opacity: ${props => props.available ? 1 : 0.5};
     
@@ -32,7 +33,7 @@ const DomainView = styled.div`
 `;
 const AdditionalInfo = styled.div`
     margin-top: 1em;
-    color: #292929;
+    color: ${props => props.theme.text};
 
     > label {
         font-weight: 600;
@@ -40,11 +41,12 @@ const AdditionalInfo = styled.div`
 `
 
 const RootDomain = styled.span`
-    color: #424242;
+    color: ${props => props.theme.text};
+    font-family: monospace;
 `
 const Availability = styled.span`
-    background: ${props => props.available ? "#000" : "#ef5353"};
-    color: #FFF;
+    background: ${props => props.available ? props.theme.actionPanelBorder : "#ef5353"};
+    color: ${props => props.available ? props.theme.cardText : "#fff"};
     font-weight: 600;
     text-transform: capitalize;
     font-size: 8pt;
@@ -53,7 +55,7 @@ const Availability = styled.span`
 `
 const SmallText = styled.div`
     font-size: 6pt;
-    color: #aaa;
+    color: ${props => props.theme.text};
     text-align: left;
 `
 const BuyButton = styled(Button)`

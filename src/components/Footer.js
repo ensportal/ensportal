@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    position: fixed;
     bottom: 0;
     padding: 1em;
     max-height: 20px;
-    width: 100%;
+    color: ${props => props.theme.text};
     background: ${props => props.theme.controlBackground}
-    border-top: 1px solid black;
+    border-top: 1px solid ${props => props.theme.controlBorder};
 `;
 
 class Footer extends Component 
