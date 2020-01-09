@@ -45,6 +45,11 @@ class Search extends Component {
  
     handleSearch = debounce((strInput) =>
     {
+        if(strInput.trim().length === 0) {
+            this.setState({search: {subdomain: null}, "error": null})
+            return;
+        }
+
         this.setState({search: {subdomain: null}, "error": null})
 
         if(strInput.match(/^[A-z0-9]+$/)) {

@@ -99,8 +99,10 @@ class DomainList extends Component {
             
             if(domain.version in registrarVersions) {
                 let info = await registrarVersions[domain.version].query(domain, this.props.subdomain);
+                console.log(info)
                 domainnames[i].available = info[0] == "" ? false : true
                 domainnames[i].price = info[0] == "" ? 0 : window.web3.fromWei(info[1])
+                domainnames[i].referral = info[0] == "" ? 0 : info[3].toNumber()
             } else {
                 console.log(`not supported version`)
             }
@@ -129,6 +131,7 @@ class DomainList extends Component {
                                     label={item.label}
                                     nftid={item.id}
                                     price={item.price}
+                                    referral={item.referral}
                                     subdomainCount="0"
                                 >{item.name}</Domain>
                             )

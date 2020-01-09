@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-import { Button  } from '@mycrypto/ui';
+import { Button, Icon, Tooltip } from '@mycrypto/ui';
 import styled from 'styled-components';
 import Moment from 'react-moment';
 
 import Config from '../Config.json'
-//import EnsBaseRegistrarAbi from '../contracts/EnsBaseRegistrar.json' @todo - get the artifact
+import EnsBaseRegistrarAbi from '../contracts/EthBaseRegistrar.json'
 
-import { default as contract } from 'truffle-contract';
+import { ethers } from 'ethers';
 
 const Container = styled.div`
     width: 400px;
@@ -51,21 +51,17 @@ const Availability = styled.span`
     margin-right: 1em;
     padding: 0.5em;
 `
-const NftId = styled.span`
+const SmallText = styled.div`
     font-size: 6pt;
     color: #aaa;
-    text-align: center;
+    text-align: left;
 `
 const BuyButton = styled(Button)`
-    width: 315px;
+    width: 100%;
     margin-bottom: 15px;
     font-size: 17px;
     text-align: center;
     white-space: nowrap;
-
-    @media (min-width: 700px) {
-        width: 230px;
-    }
 
     ${props => props.free 
         ? 
@@ -104,8 +100,53 @@ const BuyButton = styled(Button)`
     }
 
     &:hover {
-        cursor: ${props => props.available ? "default" : "not-allowed"};
+        cursor: ${props => props.available ? "hand" : "not-allowed"};
+        ${props => props.free 
+            ? 
+                `
+                background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+                background-size: 1800% 1800%;
+    
+                -webkit-animation: rainbow 5s ease infinite;
+                -z-animation: rainbow 5s ease infinite;
+                -o-animation: rainbow 5s ease infinite;
+                animation: rainbow 5s ease infinite;}
+    
+                @-webkit-keyframes rainbow {
+                    0%{background-position:0% 82%}
+                    50%{background-position:100% 19%}
+                    100%{background-position:0% 82%}
+                }
+                @-moz-keyframes rainbow {
+                    0%{background-position:0% 82%}
+                    50%{background-position:100% 19%}
+                    100%{background-position:0% 82%}
+                }
+                @-o-keyframes rainbow {
+                    0%{background-position:0% 82%}
+                    50%{background-position:100% 19%}
+                    100%{background-position:0% 82%}
+                }
+                @keyframes rainbow { 
+                    0%{background-position:0% 82%}
+                    50%{background-position:100% 19%}
+                    100%{background-position:0% 82%}
+                }
+                `
+            :
+                ``
     }
+`
+const AddInfoIcon = styled(Icon)`
+    vertical-align: sub;
+`
+const AddInfoValue = styled.span`
+    vertical-align: middle;
+`
+const AddInfoLabel = styled.label`
+    margin-right: 0.5em;
+    margin-left: 0.25em;
+    vertical-align: middle;
 `
 
 class Domain extends Component {
@@ -120,8 +161,8 @@ class Domain extends Component {
 
     async componentDidMount()
     {
-        //const BaseRegistrar = new contract(Config.ens.baseRegistrarImplementationAddress, EnsBaseRegistrarAbi)
-        const nameExpires = 1588550400 //await BaseRegistrar.nameExpires(this.props.id)        
+        const BaseRegistrar = new ethers.Contract(Config.ens.baseRegistrarImplementationAddress, EnsBaseRegistrarAbi, ethers.getDefaultProvider())
+        const nameExpires = await BaseRegistrar.nameExpires(this.props.nftid)        
 
         this.setState({
             expire: nameExpires
@@ -150,8 +191,19 @@ class Domain extends Component {
                 }
                 <AdditionalInfo>
                     {/* <label>Number of Subdomains:</label> {this.props.subdomainCount} <br /> */}
-                    <label>Valid for:</label> <Moment unix durationFromNow>{this.state.expire}</Moment> <br />
-                    <NftId>erc721 id: {this.props.nftid}</NftId>
+                     
+                    <Tooltip tooltip={`This is when the name ${[this.props.name,Config.settings.tld].join(".")} expires. Anyone can extend the life of it.`}>
+                        <AddInfoIcon icon="shape" />
+                        <AddInfoLabel>Renew in:</AddInfoLabel>
+                        <AddInfoValue>
+                            <Moment unix durationFromNow>{this.state.expire}</Moment>
+                        </AddInfoValue>
+                    </Tooltip>
+
+                    <br />
+
+                    <SmallText>erc721 id: {this.props.nftid}</SmallText> <br />
+                    <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText> <br />
                 </AdditionalInfo>
             </DomainView>
         )
