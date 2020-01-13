@@ -8,6 +8,8 @@ import Footer from './components/Footer'
 import ThemeSwitch from './components/ThemeSwitch'
 import UsersEthereumAddress from './components/UsersEthereumAddress'
 
+import { ethers } from 'ethers'
+
 const AppContainer = styled.div`
   padding: 1em;
   background: ${props => props.theme.panelBackground};
@@ -25,15 +27,44 @@ class App extends Component {
   {
       super()
       this.state = {
-          theme_light: true
+          theme_light: true,
+          web3: {
+            provider: null,
+            signer: null,
+            userAddress: null
+          }
       };
 
-      this.changeTheme = this.changeTheme.bind(this);
+      this.changeTheme = this.changeTheme.bind(this)
+      this.getWeb3 = this.getWeb3.bind(this)
   }
 
   async componentDidMount()
   {
+    await this.getWeb3();
+  }
 
+  async getWeb3()
+  {
+    if(window.web3) {
+      const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+      this.setState({
+        web3: {
+          provider: provider,
+          signer: provider.getSigner(0),
+          userAddress: provider.provider.selectedAddress
+        }
+      });
+    } else {
+      const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/154ede9d229f4a1bb54f6fa80afbe920");
+      this.setState({
+        web3: {
+          provider: provider,
+          signer: null,
+          userAddress: null
+        }
+      });      
+    }
   }
 
   changeTheme()
@@ -46,14 +77,23 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={this.state.theme_light ? light : dark}>
-        <AppContainer>
-            <TopRight>
-              <ThemeSwitch changeTheme={this.changeTheme} theme_light={this.state.theme_light ? true : false}/>
-              <UsersEthereumAddress />
-            </TopRight>
-            <Header />
-            <Search />
-        </AppContainer>
+          {
+            this.state.web3.userAddress !== null
+            ?
+              <AppContainer>
+                <TopRight>
+                  <ThemeSwitch changeTheme={this.changeTheme} theme_light={this.state.theme_light ? true : false}/>
+                  <UsersEthereumAddress web3={this.state.web3} />
+                </TopRight>
+                <Header />
+                <Search web3={this.state.web3} />
+              </AppContainer>
+            :
+              <AppContainer>
+                <Header />
+                <p>No web3</p>
+              </AppContainer>
+          }
         <Footer />
       </ThemeProvider>
     );

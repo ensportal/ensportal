@@ -2664,6 +2664,11 @@ caniuse-lite@^1.0.30001010:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001019.tgz#857e3fccaad2b2feb3f1f6d8a8f62d747ea648e1"
   integrity sha512-6ljkLtF1KM5fQ+5ZN0wuyVvvebJxgJPTmScOMaFuQN2QuOzvRJnWSKfzQskQU5IOU4Gap3zasYPIinzwUjoj/g==
 
+canvas-confetti@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/canvas-confetti/-/canvas-confetti-1.0.3.tgz#39daffb9ad09baf21195f19029a235425be10ddb"
+  integrity sha512-ECh9JmdsWfCCEUpquhu/aWdTLJiHgMdap1fR8nzZmYttoEf7KwFUvTz7rWInt6D6XsnUc1jCAMUBvIiEOe5zpQ==
+
 capture-exit@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/capture-exit/-/capture-exit-2.0.0.tgz#fb953bfaebeb781f62898239dabb426d08a509a4"
@@ -9103,6 +9108,13 @@ react-app-polyfill@^1.0.5:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-confetti@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/react-confetti/-/react-confetti-5.0.1.tgz#3003570778cafad4db0ab5513018d4c10e9d1271"
+  integrity sha512-mMxg2JPiRynzWEcfdsUVciRSKr2Mm3pFVKSGng/9Rgg1fYLxVj5XgSqiCP7kz2fN8/xfC79Rbgp1JRyCYssBkA==
+  dependencies:
+    tween-functions "^1.2.0"
+
 react-dev-utils@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.0.0.tgz#bd2d16426c7e4cbfed1b46fb9e2ac98ec06fcdfa"
@@ -10815,6 +10827,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tween-functions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+  integrity sha1-GuOlDnxguz3vd06scHrLynO7w/8=
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

@@ -7,7 +7,8 @@ import Moment from 'react-moment';
 import Config from '../Config.json'
 import EnsBaseRegistrarAbi from '../contracts/EthBaseRegistrar.json'
 
-import { ethers } from 'ethers';
+import { ethers, utils } from 'ethers';
+import Confetti from 'react-confetti'
 
 const Container = styled.div`
     width: 400px;
@@ -52,6 +53,7 @@ const Availability = styled.span`
     font-size: 8pt;
     margin-right: 1em;
     padding: 0.5em;
+    margin-left: ${props => props.userOwnsIt ? '1em' : 0}
 `
 const SmallText = styled.div`
     font-size: 6pt;
@@ -157,23 +159,91 @@ class Domain extends Component {
     {
         super();
         this.state = {
-            expire: null
+            expire: {
+                fetched: false,
+                timestamp: null
+            },
+            userOwnsIt: false,
+            userBoughtIt: false,
+            txPending: false
         };
+
+        this.buySubDomain = this.buySubDomain.bind(this);
+        this.confettiCan = React.createRef();
     }
 
     async componentDidMount()
     {
+
+        // Find out how long left for the domaon name to expire
         const BaseRegistrar = new ethers.Contract(Config.ens.baseRegistrarImplementationAddress, EnsBaseRegistrarAbi, ethers.getDefaultProvider())
         const nameExpires = await BaseRegistrar.nameExpires(this.props.nftid)        
 
         this.setState({
-            expire: nameExpires
+            expire: {
+                fetched: true,
+                timestamp: nameExpires
+            }
         });
+
+        if(this.props.available === false) {
+            // See if the user owns the name already
+            const ensNameOwner = await this.props.web3.provider.resolveName([this.props.subdomain,this.props.name,Config.ens.tld].join(".")).then(function(address) {
+                return address;
+            })
+
+            if(ensNameOwner !== null && this.props.web3.userAddress !== undefined) {
+                if(ensNameOwner.toLowerCase() === this.props.web3.userAddress.toLowerCase()) {
+                    this.setState({
+                        userOwnsIt: true
+                    })
+                }
+            }
+        }
     }
 
-    async buySubDomain(domain, subdomain, item, info)
+    async buySubDomain()
     {
-        
+
+        if(this.state.userOwnsIt) {
+            return;
+        }
+
+        this.setState({
+            txPending: true
+        });
+
+        let tx = this.props.domain.contract.register(
+          utils.keccak256(utils.toUtf8Bytes(this.props.name)),
+          this.props.subdomain,
+          this.props.web3.userAddress,
+          Config.settings.referrerAddress,
+          this.props.resolverAddr,
+          {
+            from: this.props.web3.userAddress,
+            value: this.props.priceWei,
+          }
+        ).then(function(res) {
+            console.log(`@@@res`)
+            console.log(res)
+
+            this.setState({
+                userBoughtIt: true,
+                userOwnsIt: true,
+                txPending: false
+            })
+        }.bind(this)).catch(function(err) {
+            console.log(`@@@err`)
+            console.log(err)
+
+            this.setState({
+                txPending: false
+            });
+        }.bind(this))
+
+        // @todo - monitor for returned transaction hash
+        console.log(`@@@tx`)
+        console.log(tx)
     }
 
     renderView()
@@ -181,13 +251,31 @@ class Domain extends Component {
         return(
             <DomainView>
                 <h3>
-                <Availability available={this.props.available}>{this.props.available ? "AVAILABLE" : "UNAVAILABLE"}</Availability>
+                    <Availability available={this.props.available}>{this.props.available ? "AVAILABLE" : "UNAVAILABLE"}</Availability>
                     <RootDomain>{[this.props.subdomain,this.props.name,Config.ens.tld].join(".")}</RootDomain>
+                    {
+                        this.state.userOwnsIt
+                            ?
+                                <Availability available={true} userOwnsIt={true}>THIS IS YOU</Availability>
+                            :
+                                ``
+                    }
                 </h3>
+
                 {
                 this.props.available
-                    ? <BuyButton primary available={this.props.available} free={this.props.price == 0 ? true : false}>
-                        {this.props.price == 0 ? `Get it for FREE` : `🛒 Buy for ${this.props.price}ETH`}
+                    ? <BuyButton primary available={this.props.available} free={this.props.price == 0 ? true : false} onClick={this.buySubDomain}>
+                        {
+                            this.state.txPending
+                            ?
+                                `Confirming...`
+                            :
+                                this.props.price == 0 
+                                ? 
+                                    `Get it for FREE` 
+                                : 
+                                    `🛒 Buy for ${this.props.price}ETH`
+                        }
                       </BuyButton>
                     : <BuyButton available={this.props.available}>Unavailable</BuyButton>
                 }
@@ -198,7 +286,13 @@ class Domain extends Component {
                         <AddInfoIcon icon="shape" />
                         <AddInfoLabel>Renew in:</AddInfoLabel>
                         <AddInfoValue>
-                            <Moment unix durationFromNow>{this.state.expire}</Moment>
+                        {
+                            this.state.expire.fetched
+                            ?
+                                <Moment unix durationFromNow>{this.state.expire.timestamp}</Moment>
+                            :
+                                <span>...</span>
+                        }
                         </AddInfoValue>
                     </Tooltip>
 
@@ -207,6 +301,16 @@ class Domain extends Component {
                     <SmallText>erc721 id: {this.props.nftid}</SmallText>
                     <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
                 </AdditionalInfo>
+                {
+                    this.state.userBoughtIt
+                    ?
+                        <Confetti
+                            width="200px"
+                            height="100px"
+                        />
+                    :
+                        ``
+                }
             </DomainView>
         )
     }

@@ -20,6 +20,10 @@ const Container = styled.div`
     > svg {
         height: 25px;
         width: 25px;
+
+        > path {
+            fill: ${props => props.theme.text}
+        }
     }
 `;
 

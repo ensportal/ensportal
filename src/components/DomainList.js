@@ -8,8 +8,6 @@ import ens_artifacts from '../contracts/Ens.json';
 
 import { utils } from 'ethers';
 import { default as contract } from 'truffle-contract';
-import { default as namehash } from 'eth-ens-namehash';
-import { default as _ } from 'underscore';
 
 
 const Container = styled.div`
@@ -49,7 +47,8 @@ class DomainList extends Component {
           "domains": {
             "fetched": false,
             "details": []
-          }
+          },
+          "resolverAddr": null
         }
 
         this.buildInstances = this.buildInstances.bind(this);
@@ -59,8 +58,8 @@ class DomainList extends Component {
     {
         var self = this;
 
-        SubdomainRegistrar.setProvider(window.web3.currentProvider);
-        ENS.setProvider(window.web3.currentProvider);
+        SubdomainRegistrar.setProvider(window.web3.currentProvider); //@todo - maybe use this.props.web3.provider?
+        ENS.setProvider(window.web3.currentProvider); //@todo - maybe use this.props.web3.provider?
     
         try {
           self.ens = await ENS.deployed();
@@ -69,7 +68,11 @@ class DomainList extends Component {
           await this.buildInstances();
     
           // Get the address of the current public resolver
-          self.resolverAddress = await self.ens.resolver(namehash.hash(Config.ens.publicResolverName));
+          const resolverAddress = await this.props.web3.provider.resolveName(Config.ens.publicResolverName).then(function(address) {
+            return address;
+          })
+          console.log(`@@RESOLVER: ${resolverAddress}`)
+          this.setState({"resolverAddr": resolverAddress})
         } catch(e) {
           console.log(e);
           //   $("#wrongnetworkmodal").modal('show');
@@ -98,9 +101,10 @@ class DomainList extends Component {
             if(domain.version in registrarVersions) {
                 let info = await registrarVersions[domain.version].query(domain, this.props.subdomain);
                 console.log(info)
-                domainnames[i].available = info[0] == "" ? false : true
-                domainnames[i].price = info[0] == "" ? 0 : window.web3.fromWei(info[1])
-                domainnames[i].referral = info[0] == "" ? 0 : info[3].toNumber()
+                domainnames[i].available = info[0] === "" ? false : true
+                domainnames[i].price = info[0] === "" ? 0 : window.web3.fromWei(info[1])
+                domainnames[i].priceWei = info[0] === "" ? 0 : info[1]
+                domainnames[i].referral = info[0] === "" ? 0 : info[3].toNumber()
             } else {
                 console.log(`not supported version`)
             }
@@ -118,18 +122,22 @@ class DomainList extends Component {
         return (
             <Container>
                 {
-                    this.state.domains.fetched
+                    this.state.domains.fetched && this.state.resolverAddr !== undefined
                         ?
                             this.state.domains.details.map((item,key) =>
                                 <Domain 
                                     key={item.id} 
                                     name={item.name} 
+                                    domain={item}
                                     subdomain={this.props.subdomain}
                                     available={item.available}
                                     label={item.label}
                                     nftid={item.id}
                                     price={item.price}
+                                    priceWei={item.priceWei}
                                     referral={item.referral}
+                                    resolverAddr={this.state.resolverAddr}
+                                    web3={this.props.web3}
                                     subdomainCount="0"
                                 >{item.name}</Domain>
                             )

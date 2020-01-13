@@ -12,6 +12,12 @@ const Heading = styled.h1`
 const PoweredBy = styled.span`
     display: inline-block;
 `
+const ProductStage = styled.span`
+    color: #dd2e2e;
+    font-size: 50%;
+    text-transform: uppercase;
+    margin-left: 1em;
+`
 const Slogan = styled.span`
     display: block;
     margin-bottom: 2em;
@@ -22,9 +28,12 @@ class Header extends Component {
   render() {
     return (
         <HeaderContainer>
-            <Heading>ENSPortal</Heading>
+            <Heading>
+                ENSPortal
+            </Heading>
 
             <PoweredBy>Built on Ethereum</PoweredBy>
+            <ProductStage>unaudited, still being built - use at own risk!</ProductStage>
 
             <Slogan>
                 Get a vanity name for your blockchain addresses at a very low cost!

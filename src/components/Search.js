@@ -89,7 +89,7 @@ class Search extends Component {
 
                 {
                     this.state.search.subdomain !== null
-                        ? <DomainList subdomain={this.state.search.subdomain} />
+                        ? <DomainList subdomain={this.state.search.subdomain} web3={this.props.web3} />
                         : <Blurb />
                 }
             </Container>

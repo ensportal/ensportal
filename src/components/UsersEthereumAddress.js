@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { ethers } from 'ethers'
 
 import { Address } from '@mycrypto/ui'
 
@@ -9,6 +8,9 @@ const Container = styled.div`
     display: block;
     margin-top: 2em;
 `;
+const Identifier = styled(Address)`
+    // @todo - resizing
+`
 
 class UsersEthereumAddress extends Component 
 {
@@ -20,7 +22,12 @@ class UsersEthereumAddress extends Component
             address: "0x0000000000000000000000000000000000000000"
         }
 
-        this.getEnsName()
+        this.getEnsName = this.getEnsName.bind(this)
+    }
+
+    async componentDidMount()
+    {
+        await this.getEnsName()
     }
 
     truncate(addr)
@@ -30,38 +37,35 @@ class UsersEthereumAddress extends Component
 
     async getEnsName()
     {
-        if(window.web3.currentProvider) {
-            const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-            if(provider._web3Provider.selectedAddress !== undefined) {
-                const ensName = await provider.lookupAddress(provider._web3Provider.selectedAddress).then(function(address) {
-                    return address;
-                })
-                
-                this.setState({
-                    ensName: ensName,
-                    address: provider._web3Provider.selectedAddress
-                })
-            }
-        } 
+        if(this.props.web3.userAddress !== undefined) {
+            const ensName = await this.props.web3.provider.lookupAddress(this.props.web3.userAddress).then(function(address) {
+                return address;
+            })
 
-        // if(this.state.address === null) {
-        // an infinite loop on metamask address change and single page refresh
-        //     console.log("RErunning");
-        //     await this.getEnsName();
-        // }
+            this.setState({
+                ensName: ensName,
+                address: this.props.web3.userAddress
+            })
+        }
     }
 
     render()
     {
         return(
             <Container>
-                <Address
-                    address={this.state.address}
-                    title={this.state.ensName == null ? "Your Address" : this.state.ensName}
-                    truncate={this.truncate}
-                    isCopyable={false}
-                    disableCopyableTooltip={true}
-                />
+                {
+                    this.props.web3.userAddress !== undefined || this.props.web3.userAddress !== null
+                    ?
+                        <Identifier
+                            address={this.state.address}
+                            title={this.state.ensName == null ? "Your Address" : this.state.ensName}
+                            truncate={this.truncate}
+                            isCopyable={false}
+                            disableCopyableTooltip={true}
+                        />
+                    :
+                        ``
+                }
             </Container>
         );
     }

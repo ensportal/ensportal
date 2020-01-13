@@ -22,7 +22,7 @@ class Footer extends Component
     {
         return(
             <Container>
-                ENSPortal - Run by <a href="https://twitter.com/kevingaspar" target="_blank">@kevingaspar</a> &amp; <a href="https://twitter.com/sniko_">Harry Denley</a>
+                ENSPortal - Run by <a href="https://twitter.com/kevingaspar" target="_blank" rel="noopener noreferrer">@kevingaspar</a> &amp; <a href="https://twitter.com/sniko_" target="_blank" rel="noopener noreferrer">Harry Denley</a>
             </Container>
         );
     }
