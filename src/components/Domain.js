@@ -205,7 +205,7 @@ class Domain extends Component {
     async buySubDomain()
     {
 
-        if(this.state.userOwnsIt) {
+        if(this.state.userOwnsIt || this.state.txPending) {
             return;
         }
 
@@ -248,76 +248,77 @@ class Domain extends Component {
 
     renderView()
     {
+        const available = this.props.available && this.state.userOwnsIt === false ? true : false;
         return(
-            <DomainView>
-                <h3>
-                    <Availability available={this.props.available}>{this.props.available ? "AVAILABLE" : "UNAVAILABLE"}</Availability>
-                    <RootDomain>{[this.props.subdomain,this.props.name,Config.ens.tld].join(".")}</RootDomain>
+            <Container available={available}>
+                <DomainView>
+                    <h3>
+                        <Availability available={available}>{available ? "AVAILABLE" : "UNAVAILABLE"}</Availability>
+                        <RootDomain>{[this.props.subdomain,this.props.name,Config.ens.tld].join(".")}</RootDomain>
+                        {
+                            this.state.userOwnsIt
+                                ?
+                                    <Availability available={true} userOwnsIt={true}>THIS IS YOU</Availability>
+                                :
+                                    ``
+                        }
+                    </h3>
+
                     {
-                        this.state.userOwnsIt
-                            ?
-                                <Availability available={true} userOwnsIt={true}>THIS IS YOU</Availability>
-                            :
-                                ``
+                    available
+                        ? <BuyButton primary available={available} free={this.props.price == 0 ? true : false} onClick={this.buySubDomain}>
+                            {
+                                this.state.txPending
+                                ?
+                                    `Confirming...`
+                                :
+                                    this.props.price == 0 
+                                    ? 
+                                        `Get it for FREE` 
+                                    : 
+                                        `🛒 Buy for ${this.props.price}ETH`
+                            }
+                        </BuyButton>
+                        : <BuyButton available={available}>Unavailable</BuyButton>
                     }
-                </h3>
+                    <AdditionalInfo>
+                        {/* <label>Number of Subdomains:</label> {this.props.subdomainCount} <br /> */}
+                        
+                        <Tooltip tooltip={`This is when the name ${[this.props.name,Config.ens.tld].join(".")} expires. Anyone can extend the life of it.`}>
+                            <AddInfoIcon icon="shape" />
+                            <AddInfoLabel>Renew in:</AddInfoLabel>
+                            <AddInfoValue>
+                            {
+                                this.state.expire.fetched
+                                ?
+                                    <Moment unix durationFromNow>{this.state.expire.timestamp}</Moment>
+                                :
+                                    <span>...</span>
+                            }
+                            </AddInfoValue>
+                        </Tooltip>
 
-                {
-                this.props.available
-                    ? <BuyButton primary available={this.props.available} free={this.props.price == 0 ? true : false} onClick={this.buySubDomain}>
-                        {
-                            this.state.txPending
-                            ?
-                                `Confirming...`
-                            :
-                                this.props.price == 0 
-                                ? 
-                                    `Get it for FREE` 
-                                : 
-                                    `🛒 Buy for ${this.props.price}ETH`
-                        }
-                      </BuyButton>
-                    : <BuyButton available={this.props.available}>Unavailable</BuyButton>
-                }
-                <AdditionalInfo>
-                    {/* <label>Number of Subdomains:</label> {this.props.subdomainCount} <br /> */}
-                     
-                    <Tooltip tooltip={`This is when the name ${[this.props.name,Config.ens.tld].join(".")} expires. Anyone can extend the life of it.`}>
-                        <AddInfoIcon icon="shape" />
-                        <AddInfoLabel>Renew in:</AddInfoLabel>
-                        <AddInfoValue>
-                        {
-                            this.state.expire.fetched
-                            ?
-                                <Moment unix durationFromNow>{this.state.expire.timestamp}</Moment>
-                            :
-                                <span>...</span>
-                        }
-                        </AddInfoValue>
-                    </Tooltip>
+                        <br />
 
-                    <br />
-
-                    <SmallText>erc721 id: {this.props.nftid}</SmallText>
-                    <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
-                </AdditionalInfo>
-                {
-                    this.state.userBoughtIt || this.state.txPending
-                    ?
-                        <DomainBought name={[this.props.subdomain,this.props.name,Config.ens.tld].join(".")} />
-                    :
-                        ``
-                }
-            </DomainView>
+                        <SmallText>erc721 id: {this.props.nftid}</SmallText>
+                        <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
+                    </AdditionalInfo>
+                    {
+                        this.state.userBoughtIt || this.state.txPending
+                        ?
+                            <DomainBought name={[this.props.subdomain,this.props.name,Config.ens.tld].join(".")} />
+                        :
+                            ``
+                    }
+                </DomainView>
+            </Container>
         )
     }
 
     render()
     {
         return(
-            <Container available={this.props.available}>
-                {this.renderView()}
-            </Container>
+            this.renderView()
         );
     }
 
