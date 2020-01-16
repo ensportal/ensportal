@@ -55,18 +55,34 @@ class NoWeb3 extends Component
         )
     }
 
+    changeNetworkCopy()
+    {
+        return(
+            <div>
+                <p>You are on the wrong network! Please change to mainnet!</p>
+            </div>
+        )
+    }
+
     render()
     {
         return(
             <Container>
-                <h3>No Web3 detected :(</h3>
-                <div>
-                    Please enable Web3 to use ENSPortal! {
-                        this.needToEnableWeb3() 
-                            ? this.enabledWeb3ClientCopy() 
-                            : this.getWeb3ClientCopy()
-                        }
-                </div>
+                {
+                    this.props.network === false
+                    ? this.changeNetworkCopy()
+                    : 
+                        <div>
+                            <h3>No Web3 detected :(</h3>
+                            <div>
+                                Please enable Web3 to use ENSPortal! {
+                                    this.needToEnableWeb3() 
+                                        ? this.enabledWeb3ClientCopy() 
+                                        : this.getWeb3ClientCopy()
+                                    }
+                            </div>
+                        </div>
+                }
             </Container>
         );
     }

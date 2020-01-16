@@ -32,6 +32,7 @@ class App extends Component {
 
       this.state = {
           theme_light: themeIsLight,
+          isOnMainnet: null,
           web3: {
             provider: null,
             signer: null,
@@ -58,6 +59,11 @@ class App extends Component {
       try {
         await window.ethereum.enable()
 
+        const network = await web3prov.getNetwork()
+        this.setState({
+          isOnMainnet: network.chainId === 1 ? true : false
+        });
+
         setTimeout(function() {
           console.log(`Enabled window.ethereum - userAddress ${web3prov.provider.selectedAddress}`);
           this.setState({
@@ -76,6 +82,11 @@ class App extends Component {
       }
     } else if (typeof window.web3 !== 'undefined') {
       let web3prov = new ethers.providers.Web3Provider(window.web3)
+
+      const network = await web3prov.getNetwork()
+      this.setState({
+        isOnMainnet: network.chainId === 1 ? true : false
+      });
 
       this.setState({
         web3: {
@@ -102,11 +113,11 @@ class App extends Component {
               </TopRight>
               <Header />
               {
-                this.state.web3.userAddress !== null
+                this.state.web3.userAddress !== null && this.state.isOnMainnet
                 ?
                   <Search web3={this.state.web3} />
                 :
-                  <NoWeb3 onClick={this.getWeb3} />
+                  <NoWeb3 onClick={this.getWeb3} network={this.state.isOnMainnet} />
               }
             </AppContainer>
         <Footer />
