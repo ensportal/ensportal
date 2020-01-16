@@ -18,15 +18,18 @@ class UsersEthereumAddress extends Component
     {
         super()
         this.state = {
-            ensName: "No Web3 Address Detected!",
+            ensName: "",
             address: "0x0000000000000000000000000000000000000000"
         }
-
         this.getEnsName = this.getEnsName.bind(this)
     }
 
-    async componentDidMount()
+    async componentDidUpdate()
     {
+        if(this.props.address === null) {
+            return;
+        }
+
         await this.getEnsName()
     }
 
@@ -37,16 +40,19 @@ class UsersEthereumAddress extends Component
 
     async getEnsName()
     {
-        if(this.props.web3.userAddress !== undefined) {
-            const ensName = await this.props.web3.provider.lookupAddress(this.props.web3.userAddress).then(function(address) {
-                return address;
-            })
-
-            this.setState({
-                ensName: ensName,
-                address: this.props.web3.userAddress
-            })
+        if(this.props.address === this.state.address) {
+            return;
         }
+
+        console.log(`Resolving ${this.props.address} address to ENS name`)
+        const ensName = await this.props.web3.provider.lookupAddress(this.props.address).then(function(address) {
+            return address;
+        })
+
+        this.setState({
+            ensName: ensName,
+            address: this.props.address
+        })
     }
 
     render()
@@ -54,10 +60,10 @@ class UsersEthereumAddress extends Component
         return(
             <Container>
                 {
-                    this.props.web3.userAddress !== undefined || this.props.web3.userAddress !== null
+                    this.props.address !== null
                     ?
                         <Identifier
-                            address={this.state.address}
+                            address={this.props.address}
                             title={this.state.ensName == null ? "Your Address" : this.state.ensName}
                             truncate={this.truncate}
                             isCopyable={false}

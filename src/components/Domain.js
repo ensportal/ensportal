@@ -8,7 +8,8 @@ import Config from '../Config.json'
 import EnsBaseRegistrarAbi from '../contracts/EthBaseRegistrar.json'
 
 import { ethers, utils } from 'ethers';
-import Confetti from 'react-confetti'
+
+import DomainBought from './DomainBought';
 
 const Container = styled.div`
     width: 400px;
@@ -169,7 +170,6 @@ class Domain extends Component {
         };
 
         this.buySubDomain = this.buySubDomain.bind(this);
-        this.confettiCan = React.createRef();
     }
 
     async componentDidMount()
@@ -302,12 +302,9 @@ class Domain extends Component {
                     <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
                 </AdditionalInfo>
                 {
-                    this.state.userBoughtIt
+                    this.state.userBoughtIt || this.state.txPending
                     ?
-                        <Confetti
-                            width="200px"
-                            height="100px"
-                        />
+                        <DomainBought name={[this.props.subdomain,this.props.name,Config.ens.tld].join(".")} />
                     :
                         ``
                 }

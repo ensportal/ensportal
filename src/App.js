@@ -7,7 +7,7 @@ import Search from './components/Search'
 import Footer from './components/Footer'
 import ThemeSwitch from './components/ThemeSwitch'
 import UsersEthereumAddress from './components/UsersEthereumAddress'
-
+import NoWeb3 from './components/NoWeb3'
 import { ethers } from 'ethers'
 
 const AppContainer = styled.div`
@@ -26,8 +26,12 @@ class App extends Component {
   constructor()
   {
       super()
+
+      let themeIsLight = localStorage.getItem('themeIsLight') !== null ? localStorage.getItem('themeIsLight') : true;
+      themeIsLight = (themeIsLight == 'true' || themeIsLight === true) ? true : false;
+
       this.state = {
-          theme_light: true,
+          theme_light: themeIsLight,
           web3: {
             provider: null,
             signer: null,
@@ -39,61 +43,72 @@ class App extends Component {
       this.getWeb3 = this.getWeb3.bind(this)
   }
 
-  async componentDidMount()
-  {
-    await this.getWeb3();
-  }
-
-  async getWeb3()
-  {
-    if(window.web3) {
-      const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-      this.setState({
-        web3: {
-          provider: provider,
-          signer: provider.getSigner(0),
-          userAddress: provider.provider.selectedAddress
-        }
-      });
-    } else {
-      const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/154ede9d229f4a1bb54f6fa80afbe920");
-      this.setState({
-        web3: {
-          provider: provider,
-          signer: null,
-          userAddress: null
-        }
-      });      
-    }
-  }
-
   changeTheme()
   {
+    localStorage.setItem('themeIsLight', this.state.theme_light ? false : true)
     this.setState({
       theme_light: this.state.theme_light ? false : true
     });
   }
 
+  async getWeb3()
+  {
+    if (typeof window.ethereum !== 'undefined') {
+      let web3prov = new ethers.providers.Web3Provider(window.ethereum)
+      try {
+        await window.ethereum.enable()
+
+        setTimeout(function() {
+          console.log(`Enabled window.ethereum - userAddress ${web3prov.provider.selectedAddress}`);
+          this.setState({
+            web3: {
+              provider: web3prov,
+              signer: null,
+              userAddress: web3prov.provider.selectedAddress
+            }
+          })
+        }.bind(this), 1000)
+
+        return true
+      } catch (error) {
+        console.log(error)
+        return false
+      }
+    } else if (typeof window.web3 !== 'undefined') {
+      let web3prov = new ethers.providers.Web3Provider(window.web3)
+
+      this.setState({
+        web3: {
+          provider: web3prov,
+          signer: null,
+          userAddress: web3prov.provider.selectedAddress
+        }
+      })
+
+      return true
+
+    } else {
+      return false
+    }
+  }
+
   render() {
     return (
       <ThemeProvider theme={this.state.theme_light ? light : dark}>
-          {
-            this.state.web3.userAddress !== null
-            ?
-              <AppContainer>
-                <TopRight>
-                  <ThemeSwitch changeTheme={this.changeTheme} theme_light={this.state.theme_light ? true : false}/>
-                  <UsersEthereumAddress web3={this.state.web3} />
-                </TopRight>
-                <Header />
-                <Search web3={this.state.web3} />
-              </AppContainer>
-            :
-              <AppContainer>
-                <Header />
-                <p>No web3</p>
-              </AppContainer>
-          }
+          <AppContainer>
+              <TopRight>
+                <ThemeSwitch changeTheme={this.changeTheme} theme_light={this.state.theme_light ? true : false}/>
+                <UsersEthereumAddress web3={this.state.web3} address={this.state.web3.userAddress} />
+              </TopRight>
+              <Header />
+              {
+                this.state.web3.userAddress !== null
+                ?
+                  <Search web3={this.state.web3} />
+                :
+                  <NoWeb3 onClick={this.getWeb3} />
+              }
+            </AppContainer>
         <Footer />
       </ThemeProvider>
     );
