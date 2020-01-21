@@ -285,20 +285,20 @@ class Domain extends Component {
                         {/* <label>Number of Subdomains:</label> {this.props.subdomainCount} <br /> */}
                         
                         <Tooltip tooltip={`This is when the name ${[this.props.name,Config.ens.tld].join(".")} expires. Anyone can extend the life of it.`}>
-                            <AddInfoIcon icon="shape" />
-                            <AddInfoLabel>Renew in:</AddInfoLabel>
-                            <AddInfoValue>
-                            {
-                                this.state.expire.fetched
-                                ?
-                                    <Moment unix durationFromNow>{this.state.expire.timestamp}</Moment>
-                                :
-                                    <span>...</span>
-                            }
-                            </AddInfoValue>
+                            <SmallText>
+                                <AddInfoIcon icon="shape" />
+                                <AddInfoLabel>Renew in:</AddInfoLabel>
+                                <AddInfoValue>
+                                {
+                                    this.state.expire.fetched
+                                    ?
+                                        <Moment unix durationFromNow>{this.state.expire.timestamp}</Moment>
+                                    :
+                                        <span>...</span>
+                                }
+                                </AddInfoValue>
+                            </SmallText>
                         </Tooltip>
-
-                        <br />
 
                         <SmallText>erc721 id: {this.props.nftid}</SmallText>
                         <SmallText>referral fee: {(this.props.referral/1000000)*100}%</SmallText>
