@@ -10,7 +10,7 @@
     "domains": [
         {"name": "ethid", "version": "1.0", "featured": true},
         {"name": "myavatar", "version": "1.0", "featured": false},
-        {"name": "gimmethe", "version": "1.0", "featured": false},
+        {"name": "blockchainid", "version": "1.0", "featured": false},
         {"name": "ethster", "version": "1.0", "featured": true }
     ]
 }
