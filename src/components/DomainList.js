@@ -98,7 +98,7 @@ class DomainList extends Component {
       this.setState({
         price: {
           ethusd: priceUsd,
-          fiatPriceFetched: true
+          fetched: true
         }
       });
     }

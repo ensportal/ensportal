@@ -277,7 +277,7 @@ class Domain extends Component {
                                         `Get it for FREE` 
                                     : 
                                         `🛒 Buy for ${this.props.price}ETH ${
-                                            this.props.fiatPriceFetched && this.props.priceUsd > 0
+                                            this.props.fiatPriceFetched && Number.parseFloat(this.props.priceUsd).toFixed(2).toString() !== "0.00"
                                                 ?   `(\$${Number.parseFloat(this.props.priceUsd).toFixed(2)})`
                                                 : ``
                                         }`
