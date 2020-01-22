@@ -276,7 +276,11 @@ class Domain extends Component {
                                     ? 
                                         `Get it for FREE` 
                                     : 
-                                        `🛒 Buy for ${this.props.price}ETH`
+                                        `🛒 Buy for ${this.props.price}ETH ${
+                                            this.props.fiatPriceFetched && this.props.priceUsd > 0
+                                                ?   `(\$${Number.parseFloat(this.props.priceUsd).toFixed(2)})`
+                                                : ``
+                                        }`
                             }
                         </BuyButton>
                         : <BuyButton available={available}>Unavailable</BuyButton>

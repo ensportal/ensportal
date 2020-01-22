@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ReactHtmlParser from 'react-html-parser';
 import Faq from './Faq'
 
 const Container = styled.div`

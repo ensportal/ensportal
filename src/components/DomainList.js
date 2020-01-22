@@ -5,6 +5,7 @@ import Config from '../Config.json'
 
 import subdomainregistrar_artifacts from '../contracts/EthRegistrarSubdomainRegistrar.json';
 import ens_artifacts from '../contracts/Ens.json';
+import axios from 'axios'
 
 import { utils } from 'ethers';
 import { default as contract } from 'truffle-contract';
@@ -44,14 +45,19 @@ class DomainList extends Component {
       super(args);
   
       this.state = {
-          "domains": {
-            "fetched": false,
-            "details": []
+          domains: {
+            fetched: false,
+            details: []
           },
-          "resolverAddr": null
+          resolverAddr: null,
+          price: {
+            ethusd: 0,
+            fetched: false
+          }
         }
 
         this.buildInstances = this.buildInstances.bind(this);
+        this.getPriceFeed = this.getPriceFeed.bind(this)
     }
 
     async componentDidMount()
@@ -77,6 +83,24 @@ class DomainList extends Component {
           console.log(e);
           //   $("#wrongnetworkmodal").modal('show');
         }
+
+        await this.getPriceFeed();
+    }
+
+    async getPriceFeed()
+    {
+      const PRICE_FEED_API = "https://defiscan-api.herokuapp.com/api/v1/price/{TICKER}/usd"
+      const PRICE_FEED_SETTINGS = "https://defiscan-api.herokuapp.com/api/v1/price/settings"
+      const priceUsd = await axios(PRICE_FEED_API.replace("{TICKER}", "eth"))
+      .then((e) => { return e.data.prices.price ? e.data.prices.price : 0})
+      .catch((e) => { console.log(e); return 0});
+    
+      this.setState({
+        price: {
+          ethusd: priceUsd,
+          fiatPriceFetched: true
+        }
+      });
     }
 
     async buildInstances()
@@ -135,6 +159,8 @@ class DomainList extends Component {
                                     nftid={item.id}
                                     price={item.price}
                                     priceWei={item.priceWei}
+                                    priceUsd={item.price * this.state.price.ethusd}
+                                    fiatPriceFetched={this.state.price.fetched}
                                     referral={item.referral}
                                     resolverAddr={this.state.resolverAddr}
                                     web3={this.props.web3}
