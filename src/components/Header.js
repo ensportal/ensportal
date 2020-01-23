@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import Logo from '../images/logo.png'
+
 const HeaderContainer = styled.div`
     display: block;
     box-sizing: border-box;
@@ -8,6 +10,12 @@ const HeaderContainer = styled.div`
 const Heading = styled.h1`
     display: inline-block;
     padding-right: 0.5em;
+
+    > img {
+        vertical-align: middle;
+        height: 40px;
+        width: 40px;
+    }
 `;
 const PoweredBy = styled.span`
     display: inline-block;
@@ -29,7 +37,7 @@ class Header extends Component {
     return (
         <HeaderContainer>
             <Heading>
-                ENSPortal
+                <img src={Logo} alt="ENSPortal Logo" title="ENSPortal" /> ENSPortal
             </Heading>
 
             <PoweredBy>Built on Ethereum</PoweredBy>
