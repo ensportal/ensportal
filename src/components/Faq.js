@@ -6,6 +6,14 @@ const Container = styled.div`
     width: 25%;
     display: inline-block;
     vertical-align: text-top;
+
+    @media screen and (max-width: 1024px) {
+        width: 50%;
+    }
+
+    @media screen and (max-width: 600px) {
+        width: 100%;
+    }
 `
 const Question = styled.h3`
     padding: 0.5em;
