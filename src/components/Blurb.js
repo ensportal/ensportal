@@ -4,11 +4,7 @@ import Faq from './Faq'
 
 const Container = styled.div`
 `;
-const Link = styled.a`
-    color: ${props => props.theme.link};
-    text-decoration: underline;
-    text-decoration-style: dotted;
-`
+
 class Blurb extends Component 
 {
     render()

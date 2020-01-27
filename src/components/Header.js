@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Logo from '../images/logo.png'
+import Logo from '../images/ensportal-logo.png'
 
 const HeaderContainer = styled.div`
     display: block;
@@ -13,8 +13,8 @@ const Heading = styled.h1`
 
     > img {
         vertical-align: middle;
-        height: 40px;
-        width: 40px;
+        height: 60px;
+        width: 60px;
     }
 `;
 const PoweredBy = styled.span`
@@ -41,7 +41,7 @@ class Header extends Component {
             </Heading>
 
             <PoweredBy>Built on Ethereum</PoweredBy>
-            <ProductStage>unaudited, still being built - use at own risk!</ProductStage>
+            <ProductStage>BETA</ProductStage>
 
             <Slogan>
                 Get a vanity name for your blockchain addresses at a very low cost!
