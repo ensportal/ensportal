@@ -8,6 +8,7 @@
         "publicResolverName": "resolver.eth"
     },
     "domains": [
+        {"name": "defier", "version": "1.0", "featured": true},
         {"name": "ethid", "version": "1.0", "featured": true},
         {"name": "myavatar", "version": "1.0", "featured": false},
         {"name": "blockchainid", "version": "1.0", "featured": false},
