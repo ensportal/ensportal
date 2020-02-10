@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/static/js/main.3bcb37d5.chunk.js",
+    "main.js.map": "/static/js/main.3bcb37d5.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c705a541.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c705a541.js.map",
+    "static/js/2.9f410fda.chunk.js": "/static/js/2.9f410fda.chunk.js",
+    "static/js/2.9f410fda.chunk.js.map": "/static/js/2.9f410fda.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dac11de343aae57d2948b5be5aafae05.js": "/precache-manifest.dac11de343aae57d2948b5be5aafae05.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.5ecd60fb.chunk.css.map": "/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.9f410fda.chunk.js.LICENSE": "/static/js/2.9f410fda.chunk.js.LICENSE",
+    "static/media/ambo.png": "/static/media/ambo.ad13ed90.png",
+    "static/media/aragon.png": "/static/media/aragon.b3a3bbc8.png",
+    "static/media/ensportal-logo.png": "/static/media/ensportal-logo.ed1bb33d.png",
+    "static/media/etherscan.png": "/static/media/etherscan.972fdd21.png",
+    "static/media/metamask.png": "/static/media/metamask.023762b6.png",
+    "static/media/moon.5c3f0804.svg": "/static/media/moon.5c3f0804.svg",
+    "static/media/mycrypto.png": "/static/media/mycrypto.e200825f.png",
+    "static/media/sun.88ef369a.svg": "/static/media/sun.88ef369a.svg",
+    "static/media/truffle.png": "/static/media/truffle.b62b0aa1.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c705a541.js",
+    "static/js/2.9f410fda.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.3bcb37d5.chunk.js"
+  ]
+}
