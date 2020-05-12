@@ -13,6 +13,7 @@
     "canvas-confetti": "^1.0.3",
     "eth-ens-namehash": "^2.0.8",
     "ethers": "^4.0.47",
+    "gh-pages": "^2.2.0",
     "moment": "^2.24.0",
     "moment-countdown": "^0.0.3",
     "react": "^16.12.0",
