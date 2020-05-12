@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/static/js/main.3bcb37d5.chunk.js",
-    "main.js.map": "/static/js/main.3bcb37d5.chunk.js.map",
+    "main.js": "/static/js/main.0f90ee93.chunk.js",
+    "main.js.map": "/static/js/main.0f90ee93.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.c705a541.js",
     "runtime-main.js.map": "/static/js/runtime-main.c705a541.js.map",
-    "static/js/2.9f410fda.chunk.js": "/static/js/2.9f410fda.chunk.js",
-    "static/js/2.9f410fda.chunk.js.map": "/static/js/2.9f410fda.chunk.js.map",
+    "static/js/2.630ecb91.chunk.js": "/static/js/2.630ecb91.chunk.js",
+    "static/js/2.630ecb91.chunk.js.map": "/static/js/2.630ecb91.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.dac11de343aae57d2948b5be5aafae05.js": "/precache-manifest.dac11de343aae57d2948b5be5aafae05.js",
+    "precache-manifest.4b2d53bc4f18db3cfcce0ac33ffe404e.js": "/precache-manifest.4b2d53bc4f18db3cfcce0ac33ffe404e.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.9f410fda.chunk.js.LICENSE": "/static/js/2.9f410fda.chunk.js.LICENSE",
+    "static/js/2.630ecb91.chunk.js.LICENSE": "/static/js/2.630ecb91.chunk.js.LICENSE",
     "static/media/ambo.png": "/static/media/ambo.ad13ed90.png",
     "static/media/aragon.png": "/static/media/aragon.b3a3bbc8.png",
     "static/media/ensportal-logo.png": "/static/media/ensportal-logo.ed1bb33d.png",
@@ -24,8 +24,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.c705a541.js",
-    "static/js/2.9f410fda.chunk.js",
+    "static/js/2.630ecb91.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.3bcb37d5.chunk.js"
+    "static/js/main.0f90ee93.chunk.js"
   ]
 }
