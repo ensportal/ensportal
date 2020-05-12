@@ -5,6 +5,7 @@
     "ens": {
         "tld": "eth",
         "baseRegistrarImplementationAddress": "0xfac7bea255a6990f749363002136af6556b31e04",
+        "defaultSubdomainRegistrar": "0xe65d8AAF34CB91087D1598e0A15B582F57F217d9",
         "publicResolverName": "resolver.eth"
     },
     "domains": [
