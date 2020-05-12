@@ -17,7 +17,6 @@ const Container = styled.div`
 
 var SubdomainRegistrar = contract(subdomainregistrar_artifacts);
 var ENS = contract(ens_artifacts);
-const defaultSubdomainRegistrar = "0xe65d8AAF34CB91087D1598e0A15B582F57F217d9";
 
 let registrarVersions = {
     "1.0": {
@@ -114,7 +113,7 @@ class DomainList extends Component {
         for(var i = 0; i < domainnames.length; i++) {
           var domain = domainnames[i];
           if(registrars[domain.registrar] === undefined) {
-            registrars[domain.registrar] = await ((domain.registrar === undefined) ? SubdomainRegistrar.at(defaultSubdomainRegistrar) : SubdomainRegistrar.at(domain.registrar));
+            registrars[domain.registrar] = await ((domain.registrar === undefined) ? SubdomainRegistrar.at(Config.ens.defaultSubdomainRegistrar) : SubdomainRegistrar.at(domain.registrar));
           }
 
           domainnames[i].contract = registrars[domain.registrar];
