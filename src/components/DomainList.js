@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Domain from './Domain';
 import Config from '../Config.json'
 
-import subdomainregistrar_artifacts from '../contracts/EthRegistrarSubdomainRegistrar.json';
+import subdomainregistrar_artifacts from '../contracts/ENSMigrationSubdomainRegistrar.json';
 import ens_artifacts from '../contracts/Ens.json';
 import axios from 'axios'
 
@@ -17,6 +17,7 @@ const Container = styled.div`
 
 var SubdomainRegistrar = contract(subdomainregistrar_artifacts);
 var ENS = contract(ens_artifacts);
+const defaultSubdomainRegistrar = "0xe65d8AAF34CB91087D1598e0A15B582F57F217d9";
 
 let registrarVersions = {
     "1.0": {
@@ -77,6 +78,7 @@ class DomainList extends Component {
           const resolverAddress = await this.props.web3.provider.resolveName(Config.ens.publicResolverName).then(function(address) {
             return address;
           })
+
           console.log(`@@RESOLVER: ${resolverAddress}`)
           this.setState({"resolverAddr": resolverAddress})
         } catch(e) {
@@ -108,10 +110,11 @@ class DomainList extends Component {
         console.log("Building instances of domains");
         var registrars = {};
         var domainnames = Config.domains;
+
         for(var i = 0; i < domainnames.length; i++) {
           var domain = domainnames[i];
           if(registrars[domain.registrar] === undefined) {
-            registrars[domain.registrar] = await ((domain.registrar === undefined) ? SubdomainRegistrar.deployed() : SubdomainRegistrar.at(domain.registrar));
+            registrars[domain.registrar] = await ((domain.registrar === undefined) ? SubdomainRegistrar.at(defaultSubdomainRegistrar) : SubdomainRegistrar.at(domain.registrar));
           }
 
           domainnames[i].contract = registrars[domain.registrar];
@@ -119,19 +122,15 @@ class DomainList extends Component {
           domainnames[i].label = utils.keccak256(utils.toUtf8Bytes(domain.name));
 
           let name = [this.props.subdomain, domain.name, Config.ens.tld].join(".");
-
-            console.log(`Searching for name: ${name}. Registrar Version: ${domain.version}`);
-            
-            if(domain.version in registrarVersions) {
-                let info = await registrarVersions[domain.version].query(domain, this.props.subdomain);
-                console.log(info)
-                domainnames[i].available = info[0] === "" ? false : true
-                domainnames[i].price = info[0] === "" ? 0 : window.web3.fromWei(info[1])
-                domainnames[i].priceWei = info[0] === "" ? 0 : info[1]
-                domainnames[i].referral = info[0] === "" ? 0 : info[3].toNumber()
-            } else {
-                console.log(`not supported version`)
-            }
+          if(domain.version in registrarVersions) {
+              let info = await registrarVersions[domain.version].query(domain, this.props.subdomain);
+              domainnames[i].available = info[0] === "" ? false : true
+              domainnames[i].price = info[0] === "" ? 0 : window.web3.fromWei(info[1])
+              domainnames[i].priceWei = info[0] === "" ? 0 : info[1]
+              domainnames[i].referral = info[0] === "" ? 0 : info[3].toNumber()
+          } else {
+              console.log(`not supported version`)
+          }
         }
 
         this.setState({

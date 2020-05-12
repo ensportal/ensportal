@@ -175,7 +175,7 @@ class Domain extends Component {
     async componentDidMount()
     {
 
-        // Find out how long left for the domaon name to expire
+        // Find out how long left for the domain name to expire
         const BaseRegistrar = new ethers.Contract(Config.ens.baseRegistrarImplementationAddress, EnsBaseRegistrarAbi, ethers.getDefaultProvider())
         const nameExpires = await BaseRegistrar.nameExpires(this.props.nftid)        
 
