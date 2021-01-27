@@ -9,13 +9,11 @@
         "publicResolverName": "resolver.eth"
     },
     "domains": [
-        {"name": "defier", "version": "1.0", "featured": true},
         {"name": "ethid", "version": "1.0", "featured": true},
         {"name": "myavatar", "version": "1.0", "featured": false},
         {"name": "blockchainid", "version": "1.0", "featured": false},
         {"name": "ethster", "version": "1.0", "featured": true },
         {"name": "virtualid", "version": "1.0", "featured": false },
         {"name": "appleid", "version": "1.0", "featured": false },
-        {"name": "araknet", "version": "1.0", "featured": false }
     ]
 }
