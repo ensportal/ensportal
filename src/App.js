@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import ThemeSwitch from './components/ThemeSwitch'
 import UsersEthereumAddress from './components/UsersEthereumAddress'
 import NoWeb3 from './components/NoWeb3'
+import '@metamask/legacy-web3'
 import { ethers } from 'ethers'
 
 const AppContainer = styled.div`

@@ -92,13 +92,13 @@ class DomainList extends Component {
     {
       const PRICE_FEED_API = "https://defiscan-api.herokuapp.com/api/v1/price/{TICKER}/usd"
       const PRICE_FEED_SETTINGS = "https://defiscan-api.herokuapp.com/api/v1/price/settings"
-      const priceUsd = await axios(PRICE_FEED_API.replace("{TICKER}", "eth"))
-      .then((e) => { return e.data.prices.price ? e.data.prices.price : 0})
-      .catch((e) => { console.log(e); return 0});
+      // const priceUsd = await axios(PRICE_FEED_API.replace("{TICKER}", "eth"))
+      // .then((e) => { return e.data.prices.price ? e.data.prices.price : 0})
+      // .catch((e) => { console.log(e); return 0});
     
       this.setState({
         price: {
-          ethusd: priceUsd,
+          ethusd: 0,
           fetched: true
         }
       });
