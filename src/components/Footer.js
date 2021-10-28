@@ -33,8 +33,7 @@ class Footer extends Component
     {
         return(
             <Container>
-                ENSPortal - Run by <a href="https://twitter.com/kevingaspar" target="_blank" rel="noopener noreferrer">@kevingaspar</a> {' '}
-                &amp; <a href="https://twitter.com/sniko_" target="_blank" rel="noopener noreferrer">Harry Denley</a> {' '}
+                ENSPortal - Run by <a href="https://twitter.com/sniko_" target="_blank" rel="noopener noreferrer">Harry Denley</a> {' '}
                 <br />
                 <MyCryptoSupport>With support from <a href="https://mycrypto.com" target="_blank" rel="noopener noreferrer"><img src={MyCryptoLogo} alt="MyCrypto" title="MyCrypto" /></a></MyCryptoSupport>
                 <small>USD prices fetched from <a href="https://nomics.com/" target="_blank" rel="noopener noreferrer">Nomics.com</a></small>
